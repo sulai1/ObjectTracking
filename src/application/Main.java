@@ -24,7 +24,11 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+<<<<<<< HEAD
 			VideoView videoView = new VideoView(SPHERO_MOVING);
+=======
+			VideoView videoView = new VideoView(SPHERO_STILL);
+>>>>>>> 27a3cb240cda9367b5c987dd5c50f1a8d1d461dc
 			videoView.play();
 			root.setCenter(videoView);
 			
