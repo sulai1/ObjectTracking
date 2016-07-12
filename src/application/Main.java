@@ -2,7 +2,7 @@ package application;
 	
 import org.opencv.core.Core;
 
-import imageproc.VideoView;
+import imageproc.TrackingBenchmark;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -24,8 +24,8 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			VideoView videoView = new VideoView(SPHERO_STILL);
-			videoView.play();
+			TrackingBenchmark videoView = new TrackingBenchmark(SPHERO_STILL, "res/samples");
+			videoView.start();
 			root.setCenter(videoView);
 			
 		} catch(Exception e) {
