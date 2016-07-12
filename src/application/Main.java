@@ -18,13 +18,14 @@ public class Main extends Application {
 		try {
 			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 			
+			
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			VideoView videoView = new VideoView(SPHERO_STILL);
+			VideoView videoView = new VideoView(SPHERO_MOVING);
 			videoView.play();
 			root.setCenter(videoView);
 			

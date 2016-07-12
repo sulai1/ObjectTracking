@@ -3,7 +3,10 @@ package imageproc;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+
+import org.opencv.core.Mat;
 
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
@@ -27,7 +30,12 @@ public class VideoView extends HBox {
 
 	public VideoView(String source) throws MalformedURLException {
 		view = new MediaView(new MediaPlayer(new Media(new File(source).toURI().toString())));
-		tracker = new ObjectTracker();
+		try {
+			tracker = new ObjectTracker();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void play() {
@@ -56,12 +64,11 @@ public class VideoView extends HBox {
 				} else {
 					double curtime = (now - starttime) / 1000.0;
 					System.out.println(curtime);
-					Rectangle rect;
+					BufferedImage img;
 					try {
-						rect = tracker.track(SwingFXUtils.fromFXImage(lastFrame, null),
+						img = tracker.track(SwingFXUtils.fromFXImage(lastFrame, null),
 								SwingFXUtils.fromFXImage(curframe, null));
-						drawImage(lastFrame, rect);
-						System.out.println(rect);
+						drawImage(SwingFXUtils.toFXImage(img,null));
 					} catch (Exception e) {
 						e.printStackTrace();
 						drawImage(lastFrame);
