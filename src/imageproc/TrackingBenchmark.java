@@ -3,7 +3,10 @@ package imageproc;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+
+import org.opencv.core.Mat;
 
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
@@ -25,14 +28,13 @@ public class TrackingBenchmark extends HBox {
 	private MediaView view;
 	private ObjectTracker tracker;
 
-	/**
-	 * @param video Name of the video containing the object to track
-	 * @param samples Directory of clear sample images containing only the object to learn
-	 * @throws MalformedURLException
-	 */
-	public TrackingBenchmark(String video, String samples) throws MalformedURLException {
-		view = new MediaView(new MediaPlayer(new Media(new File(video).toURI().toString())));
-		tracker = new ObjectTracker();
+	public TrackingBenchmark(String source, String string) throws MalformedURLException {
+		view = new MediaView(new MediaPlayer(new Media(new File(source).toURI().toString())));
+		try {
+			tracker = new ObjectTracker();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void start() {
@@ -61,12 +63,11 @@ public class TrackingBenchmark extends HBox {
 				} else {
 					double curtime = (now - starttime) / 1000.0;
 					System.out.println(curtime);
-					Rectangle rect;
+					BufferedImage img;
 					try {
-						rect = tracker.track(SwingFXUtils.fromFXImage(lastFrame, null),
+						img = tracker.track(SwingFXUtils.fromFXImage(lastFrame, null),
 								SwingFXUtils.fromFXImage(curframe, null));
-						drawImage(lastFrame, rect);
-						System.out.println(rect);
+						drawImage(SwingFXUtils.toFXImage(img,null));
 					} catch (Exception e) {
 						e.printStackTrace();
 						drawImage(lastFrame);
@@ -78,6 +79,7 @@ public class TrackingBenchmark extends HBox {
 
 		};
 		timer.start();
+
 	}
 
 	private void drawImage(WritableImage frame, Rectangle bounds) {

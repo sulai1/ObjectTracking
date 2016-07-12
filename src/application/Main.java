@@ -4,9 +4,9 @@ import org.opencv.core.Core;
 
 import imageproc.TrackingBenchmark;
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
@@ -24,9 +24,9 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			TrackingBenchmark videoView = new TrackingBenchmark(SPHERO_STILL, "res/samples");
-			videoView.start();
-			root.setCenter(videoView);
+			TrackingBenchmark benchmark = new TrackingBenchmark(SPHERO_STILL, "res/samples");
+			benchmark.start();
+			root.setCenter(benchmark);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
