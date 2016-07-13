@@ -1,4 +1,4 @@
-####Sphero Smile
+#Sphero Smile
 
 ##prequisits:
 OpenCV 3.1.0
