@@ -2,7 +2,7 @@ package application;
 	
 import org.opencv.core.Core;
 
-import imageproc.TrackingBenchmark;
+import gui.TrackingBenchmark;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -24,7 +24,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			TrackingBenchmark benchmark = new TrackingBenchmark(SPHERO_STILL, "res/samples");
+			TrackingBenchmark benchmark = new TrackingBenchmark(SPHERO_MOVING, "res/samples");
 			benchmark.start();
 			root.setCenter(benchmark);
 			

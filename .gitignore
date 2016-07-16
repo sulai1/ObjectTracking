@@ -2,3 +2,5 @@
 /res/*.YAML
 
 .project
+/res/*.yml
+*.YAML
