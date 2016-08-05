@@ -1,7 +1,11 @@
 /bin/
 /res/*.YAML
 
+.metadata
+.recommenders
+
 .project
 /res/*.yml
 *.YAML
 /.classpath
+/ARTracking/*.log
