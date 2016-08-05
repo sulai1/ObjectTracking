@@ -4,9 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+<<<<<<< HEAD
 import com.sulai.imageproc.AbstractTracker;
 import com.sulai.imageproc.CVUtils;
 
+=======
+import imageproc.AbstractTracker;
+import imageproc.CVUtils;
+>>>>>>> dc418987e2b931b753df16edd59c7a9763f6e05b
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
