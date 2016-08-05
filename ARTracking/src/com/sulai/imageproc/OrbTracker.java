@@ -14,7 +14,7 @@ import org.opencv.features2d.FeatureDetector;
 import org.opencv.features2d.Features2d;
 import org.opencv.imgproc.Imgproc;
 
-import javafx.scene.layout.Pane;
+import com.sulai.gui.UIProperty;
 
 public class OrbTracker extends AbstractTracker {
 
@@ -22,10 +22,9 @@ public class OrbTracker extends AbstractTracker {
 	private DescriptorExtractor extractor;
 	private DescriptorMatcher matcher;
 	
-	private int k = 10;
+	private UIProperty<Integer> k = new UIProperty<Integer>(10);
 
-	public OrbTracker(Pane parent, Mat[] samples) {
-		super(parent);
+	public OrbTracker(Mat[] samples) {
 		//init matching
 		detector = FeatureDetector.create(FeatureDetector.ORB);
 		extractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
@@ -64,7 +63,7 @@ public class OrbTracker extends AbstractTracker {
 			return (int) (b.distance - a.distance);
 		});
 
-		int k = Math.min(this.getK(), lMatch.size());
+		int k = Math.min(getK().get(), lMatch.size());
 		KeyPoint[] lKeyPts = keypoints.toArray();
 		KeyPoint[] lMKeyPts = new KeyPoint[k];
 		DMatch[] m = new DMatch[k];
@@ -81,12 +80,8 @@ public class OrbTracker extends AbstractTracker {
 		return frame;
 	}
 
-	public int getK() {
+	public UIProperty<Integer> getK() {
 		return k;
-	}
-
-	public void setK(int k) {
-		this.k = k;
 	}
 
 }

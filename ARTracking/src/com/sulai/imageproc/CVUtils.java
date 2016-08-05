@@ -27,10 +27,10 @@ import javafx.collections.ObservableList;
 
 public class CVUtils {
 
-	public static final Scalar RED = new Scalar(0,0,255);
-	public static final Scalar BLACK = new Scalar(0,0,0);
-	
-	public static ObservableList<String> observableThreshList(){
+	public static final Scalar RED = new Scalar(0, 0, 255);
+	public static final Scalar BLACK = new Scalar(0, 0, 0);
+
+	public static ObservableList<String> observableThreshList() {
 		ObservableList<String> items = FXCollections.observableArrayList();
 		items.add("Binary");
 		items.add("Binary Inverse");
@@ -40,7 +40,8 @@ public class CVUtils {
 		items.add("Trunc");
 		return items;
 	}
-	public static int getThreshType(int index){
+
+	public static int getThreshType(int index) {
 		int type;
 		switch (index) {
 		case 1:
@@ -59,12 +60,12 @@ public class CVUtils {
 			type = Imgproc.THRESH_TRUNC;
 			break;
 		default:
-			type=0;
+			type = 0;
 		}
 		return type;
 
 	}
-	
+
 	public static Mat loadImage(String path) throws IOException {
 		BufferedImage image = ImageIO.read(new File(path));
 		return bufferedImageToMat(image);
@@ -78,7 +79,7 @@ public class CVUtils {
 		mat.put(0, 0, idata);
 		return mat;
 	}
-	
+
 	public static Mat bufferedImageToGrayMat(BufferedImage bi) {
 		Mat mat;
 		mat = new Mat(bi.getHeight(), bi.getWidth(), CvType.CV_8UC1);
@@ -87,6 +88,7 @@ public class CVUtils {
 		mat.put(0, 0, idata);
 		return mat;
 	}
+
 	public static void matToString(Mat transform) {
 		for (int row = 0; row < transform.rows(); row++) {
 			for (int col = 0; col < transform.cols(); col++) {
@@ -168,11 +170,11 @@ public class CVUtils {
 	}
 
 	public static BufferedImage toBufferedImageOfSize(Mat track, double d, double e) {
-		Imgproc.resize(track, track, new Size(d,e));
+		Imgproc.resize(track, track, new Size(d, e));
 		return toBufferedImage(track);
 	}
-	
-	public static  void drawEnclosingCircle(Mat frame, MatOfPoint contour, Scalar color) {
+
+	public static void drawEnclosingCircle(Mat frame, MatOfPoint contour, Scalar color) {
 		// find the enclosing circle
 		Point center = new Point();
 		float[] radius = new float[1];

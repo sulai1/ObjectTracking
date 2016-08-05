@@ -4,20 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-<<<<<<< HEAD
 import com.sulai.imageproc.AbstractTracker;
 import com.sulai.imageproc.CVUtils;
 
-=======
-import imageproc.AbstractTracker;
-import imageproc.CVUtils;
->>>>>>> dc418987e2b931b753df16edd59c7a9763f6e05b
 import javafx.animation.AnimationTimer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
@@ -29,21 +23,17 @@ public class TrackingBenchmark extends VBox {
 
 	private MediaView view;
 	private AbstractTracker tracker;
-	private Slider slider;
 
 	public TrackingBenchmark(String source, AbstractTracker tracker) throws IOException {
 		this.tracker = tracker;
-
-		//Open Viodeo file
+		// Open Video file
 		MediaPlayer player = new MediaPlayer(new Media(new File(source).toURI().toString()));
 		view = new MediaView(player);
-		player.currentTimeProperty().addListener(c->{slider.valueProperty().set(player.getCurrentTime().toSeconds());});
-		
-		slider = new Slider(0,player.getMedia().getDuration().toSeconds(),0);
-		this.getChildren().add(slider);
-			//add to training set
-//			tracker.add(bis);
-//			tracker.train();
+		getChildren().add(view);
+	}
+
+	public MediaView getView() {
+		return view;
 	}
 
 	protected boolean isImage(String name) {
@@ -81,7 +71,9 @@ public class TrackingBenchmark extends VBox {
 				} else {
 					BufferedImage img;
 					try {
-						img = CVUtils.toBufferedImageOfSize(tracker.track(CVUtils.bufferedImageToMat(SwingFXUtils.fromFXImage(curframe, null))),getWidth(),getHeight());
+						img = CVUtils.toBufferedImageOfSize(
+								tracker.track(CVUtils.bufferedImageToMat(SwingFXUtils.fromFXImage(curframe, null))),
+								widthProperty().get(), heightProperty().get());
 						drawImage(SwingFXUtils.toFXImage(img, null));
 					} catch (Exception e) {
 						e.printStackTrace();

@@ -14,26 +14,12 @@ import org.opencv.imgproc.Imgproc;
 
 import com.sulai.gui.UIProperty;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.scene.layout.Pane;
-import javafx.util.Pair;
-
 public class CVDiffTracker extends AbstractTracker {
 
 	private static final Scalar COLOR = new Scalar(0, 0, 255);
 	private Mat refframe = null;
-	private UIProperty<Double> thresh;
-	private Pair<DoubleProperty, IntegerProperty> threshold;
-	private Pair<DoubleProperty, BooleanProperty> blur;
-
-	public CVDiffTracker(Pane parent) {
-		super(parent);
-		threshold = threshChooser("Threashold");
-		blur = blurChooser("Blur");
-	}
-
+	private UIProperty<Double> thresh = new UIProperty<>(75.);
+	private UIProperty<Double> blur = new UIProperty<>(1.);
 
 	@Override
 	public void start(Mat frame) {
@@ -52,17 +38,15 @@ public class CVDiffTracker extends AbstractTracker {
 		Mat res = new Mat();
 		// calculate diff and threshold
 		Core.absdiff(frame1, refframe, res);
-		if(blur.getValue().get())
-			Imgproc.blur(res, res, new Size(blur.getKey().get(), blur.getKey().get()));
-		Imgproc.threshold(res, res, threshold.getKey().get(), 255, threshold.getValue().get());
+		Imgproc.blur(res, res, new Size(getBlur().get(), getBlur().get()));
+		Imgproc.threshold(res, res, thresh.get(), 255, 0);
 
 		// calculate the contours
 		ArrayList<MatOfPoint> contours = new ArrayList<>();
-		Imgproc.findContours(res, contours, new Mat(), Imgproc.RETR_TREE,
-				Imgproc.CHAIN_APPROX_SIMPLE);
+		Imgproc.findContours(res, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 		Imgproc.drawContours(f1, contours, -1, COLOR);
 		int l = Math.min(contours.size(), 200);
-		for (int i=0;i < l;i++) {
+		for (int i = 0; i < l; i++) {
 			MatOfPoint c = contours.get(i);
 			Point center = new Point();
 			float[] radius = new float[1];
@@ -74,6 +58,14 @@ public class CVDiffTracker extends AbstractTracker {
 		refframe = new Mat();
 		Imgproc.cvtColor(frame, refframe, Imgproc.COLOR_RGB2GRAY);
 		return f1;
+	}
+
+	public UIProperty<Double> getThresh() {
+		return thresh;
+	}
+
+	public UIProperty<Double> getBlur() {
+		return blur;
 	}
 
 }

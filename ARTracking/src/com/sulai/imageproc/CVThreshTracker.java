@@ -9,37 +9,15 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.scene.control.CheckBox;
-import javafx.scene.layout.Pane;
-import javafx.util.Pair;
+import com.sulai.gui.UIProperty;
 
 public class CVThreshTracker extends AbstractTracker {
 
-	private CheckBox bContours;
-	private CheckBox showAll;
-	private Pair<DoubleProperty, IntegerProperty> threshold;
-	private Pair<DoubleProperty, BooleanProperty> blur;
-
-	public CVThreshTracker(Pane parent) {
-		super(parent);
-
-		threshold = threshChooser("Threashold");
-		blur = blurChooser("Blur");
-
-		// create blur option
-		bContours = new CheckBox("Contours");
-		parent.getChildren().add(bContours);
-
-		// show all option
-		showAll = new CheckBox("Show All");
-		parent.getChildren().add(showAll);
-
-	}
-
-
+	private UIProperty<Double> thresh = new UIProperty<>(125.);
+	private UIProperty<Double> blur = new UIProperty<>(1.);
+	private UIProperty<Boolean> bContours = new UIProperty<>(false);
+	private UIProperty<Boolean> showAll = new UIProperty<>(false);
+	
 	@Override
 	public void start(Mat frame) {
 
@@ -50,13 +28,13 @@ public class CVThreshTracker extends AbstractTracker {
 		Mat frame1 = new Mat(); 
 		Imgproc.cvtColor(f1, frame1, Imgproc.COLOR_RGB2GRAY);
 		// apply optional blur
-		if (blur.getValue().get()) {
-			Imgproc.blur(frame1, frame1, new Size(blur.getKey().get(), blur.getKey().get()));
+		if (true) {
+			Imgproc.blur(frame1, frame1, new Size(blur.get(), blur.get()));
 		}
 
 		// apply threshold and remove small blobs
 		Mat thresh = new Mat();
-		Imgproc.threshold(frame1, thresh, threshold.getKey().get(), 255, threshold.getValue().get());
+		Imgproc.threshold(frame1, thresh, this.thresh.get(), 255, 0);
 
 		// find contours
 		List<MatOfPoint> contours = new ArrayList<>();
@@ -64,7 +42,7 @@ public class CVThreshTracker extends AbstractTracker {
 		Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
 		// optionally draw the contours
-		if (bContours.isSelected()) {
+		if (bContours.get()) {
 			Imgproc.drawContours(f1, contours, -1, CVUtils.RED);
 		}
 
@@ -81,7 +59,7 @@ public class CVThreshTracker extends AbstractTracker {
 				maxArea = m.m00;
 				maxContour = c;
 			}
-			if (showAll.isSelected())
+			if (showAll.get())
 				CVUtils.drawEnclosingCircle(f1, c,CVUtils.RED);
 			// draw every circle
 		}
@@ -92,6 +70,18 @@ public class CVThreshTracker extends AbstractTracker {
 		}
 		return f1;
 	}
+
+
+	public UIProperty<Double> getThresh() {
+		return thresh;
+	}
+	
+	public UIProperty<Double> getBlur() {
+		return blur;
+	}
+	
+	
+	
 
 	
 

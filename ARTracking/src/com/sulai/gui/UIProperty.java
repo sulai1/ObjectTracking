@@ -6,6 +6,10 @@ public class UIProperty<T> {
 
 	private PropertyObserver o;
 
+	public UIProperty(T val) {
+		set(val);
+	}
+
 	public abstract class PropertyObserver {
 		public abstract void propertyChange(T property);
 	}
