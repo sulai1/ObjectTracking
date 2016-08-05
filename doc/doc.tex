@@ -1,0 +1,98 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\author{Sascha Wernegger}
+\begin{document}
+
+\title{Android development with Unity3D and OpenCV}
+\maketitle
+\section{Setup}
+To ease things a little up for the OpenCV and Android Setup install NVidia Codeworks. Be sure to Check all options for during the installation to be sure. It should install a folder called NVPACK where you can find the Android SDK and NDK and the OpenCV Library for Android with working samples. Codeworks comes with an Eclipse version where you simply can import the sample projects and modify them.
+
+\subsection{ADB Logcat}
+The Logcat tool is able to output the Log of the Android device. Its located in the Android-SDK  folder under Platform tools but should be available system wide after SDK installation. Open console here. To output the log enter 
+\begin{lstlisting}
+$ adb logcat
+\end{lstlisting}
+and run the application. You Can use Filters to output only certain types of logs.The priority is one of the following character values, ordered from lowest to highest priority:
+\begin{itemize}
+	\item[] V - Verbose (lowest priority)
+	\item[] D - Debug
+	\item[] I - Info (default priority)
+	\item[] W - Warning
+	\item[] E - Error
+	\item[] F - Fatal
+	\item[] S - Silent (highest priority, on which nothing is ever printed)
+\end{itemize}
+Like this you can remove all with lesser priority than E.
+\begin{lstlisting}
+$ adb logcat *:E
+\end{lstlisting}
+You can also output the log to a file.
+\begin{lstlisting}
+$ adb logcat *:E > myfile.txt
+\end{lstlisting}
+To debug for logs from your application run the following.
+\begin{lstlisting}
+$ adb -d logcat <your package name>:<log level>
+\end{lstlisting}
+-d denotes an actual device and -e denotes an emulator. If there's more than 1 emulator running you can use 
+\begin{lstlisting}
+-s emulator-<emulator number> 
+\end{lstlisting}
+
+\subsection{Unity first Android Test}
+Download Unity3D installer and run it. Follow instructions and be aware to add Android features.
+After installation create a new project and open it. Now you come up with a default scene. Save the scene and give it a name. Under $Edit \rightarrow Preferences$, select $External$ $Tools$ and select the root folders of the JDK, Android SDK and NDK (install them if necessary, and to be sure select all options for SDK).Click on $File \rightarrow Build$ $Settings$ and select Android as target and press switch to platform. Select Player Settings and open the $Other$ $Settings$ in the Inspector. Enter a $Bundle Identifier$. Now You can hit \textit{Build and Run} under \textit{File}
+
+\subsection{Unity Call Java from C-Sharp}
+The first working sample i produced following\href{https://www.thepolyglotdeveloper.com/2014/06/creating-an-android-java-plugin-for-unity3d/}{this} Guide.
+\\\\
+TODO:
+\begin{itemize}
+	\item Also call android library from C-Sharp
+	\item Call android library with OpenCV from C-Sharp
+\end{itemize}
+\subsection{OpenCV}
+The use of OpenCV is slightly different from the other languages. The most important packages are:
+\begin{itemize}
+	\item Core
+	\item Imgproc
+	\item Feature2d
+	\item Video
+	\item Calib3d
+\end{itemize}
+The packages are also differeing between the 2.4 version then from newer where more things from the core where added to the Imgproc package.
+
+\subsection{Android Studio Shortcuts}
+\begin{itemize}
+	\item \textbf{CTRL + ALT +L} Format Code
+	\item \textbf{CTRL + I} Add unimplemented methods
+	\item \textbf{CTRL + O} Override methods.
+	\item \textbf{CTRL + ALT + L} Format code.
+	\item \textbf{ALT + 1} Show project.
+	\item \textbf{ALT + 6}  logcat.
+	\item \textbf{SHIFT + ESC} Hide project - logcat.
+	\item \textbf{CTRL + F9} Build.
+	\item \textbf{CTRL + F10} Build and run.
+	\item \textbf{CTRL + F9} Build.
+	\item \textbf{CTRL + R} Find and replace.
+	\item \textbf{CTRL + F6} Refactor class or method
+	\item \textbf{CTRL + SHIFT + NumPad + -} Collapse all.
+	\item \textbf{CTRL + SHIFT + NumPad + +} Expand all.
+\end{itemize}
+	
+
+You can use Eclipse Short-cut key in Android Studio too.
+
+File $\rightarrow$ Settings $\rightarrow$ Keymap $\rightarrow$ Choose Eclipse from Keymaps dropdown>
+
+
+\end{document}

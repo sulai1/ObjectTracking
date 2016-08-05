@@ -9,3 +9,7 @@
 *.YAML
 /.classpath
 /ARTracking/*.log
+*.out
+*.aux
+*.log
+/doc/doc.synctex.gz
