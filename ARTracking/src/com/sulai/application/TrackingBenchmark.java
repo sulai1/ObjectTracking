@@ -1,4 +1,4 @@
-package com.sulai.gui;
+package com.sulai.application;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
