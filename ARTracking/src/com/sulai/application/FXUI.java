@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
-import com.sulai.gui.TrackingBenchmark;
 import com.sulai.gui.UI;
 import com.sulai.gui.UIProperty;
 import com.sulai.imageproc.AbstractTracker;
