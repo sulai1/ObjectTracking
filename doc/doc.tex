@@ -94,5 +94,58 @@ You can use Eclipse Short-cut key in Android Studio too.
 
 File $\rightarrow$ Settings $\rightarrow$ Keymap $\rightarrow$ Choose Eclipse from Keymaps dropdown>
 
+\subsection{Android Studio OpenCV Setup}
 
+\begin{enumerate}
+
+	\item  Download latest OpenCV sdk for Android from OpenCV.org and decompress the zip file.
+	\item Import OpenCV to Android Studio, From File $\rightarrow$ New $\rightarrow$ Import Module, choose sdk/java folder in the unzipped opencv archive.
+	\item Update build.gradle under imported OpenCV module to update 4 fields to match your project build.gradle
+	\begin{itemize}
+		\item compileSdkVersion
+		\item buildToolsVersion
+		\item minSdkVersion
+		\item targetSdkVersion
+	\end{itemize}
+	\item Add module dependency by Application $\rightarrow$ Module Settings, and select the Dependencies tab. Click + icon at bottom, choose Module Dependency and select the imported OpenCV module.\\
+	
+	\begin{itemize}
+		\item For Android Studio v1.2.2, to access to Module Settings : in the project view, right-click the
+	\end{itemize} dependent module $\rightarrow$ Open Module Settings
+	\item  Copy libs folder under sdk/native to Android Studio under app/src/main.
+	\item In Android Studio, rename the copied libs directory to jniLibs and we are done.
+\end{enumerate}
+Since Android studio expects native libs in app/src/main/jniLibs instead of older libs folder. For those new to Android OpenCV, don't miss below steps
+    
+\begin{itemize}
+	\item 
+		\begin{lstlisting}
+include static{ System.loadLibrary("opencv_java"); }
+		\end{lstlisting}
+		(Note: for OpenCV version 3 at this step you should instead load the library opencvjava3.)
+	\item For step(5), if you ignore any platform libs like x86, make sure your device/emulator is not on that platform.
+\end{itemize}
+
+to allow access to the camera we have to add some permissions to the AndroidManifest.xml. Add the following lines inside the manifest tag:
+\begin{lstlisting}
+<uses-permission android:name="android.permission.CAMERA"/>
+
+<uses-feature android:name="android.hardware.camera"
+    android:required="false"/>
+<uses-feature android:name="android.hardware.camera.autofocus"
+    android:required="false"/>
+<uses-feature android:name="android.hardware.camera.front"
+    android:required="false"/>
+<uses-feature android:name="android.hardware.camera.front.autofocus"
+    android:required="false"/>
+\end{lstlisting}
+
+Because i did use Java 8 i also had to add the following to the default tag in the build.gradle file of the app:  
+\begin{lstlisting}
+        jackOptions {
+            enabled true
+        }
+\end{lstlisting}
+\begin{h}
+\href{http://stacktips.com/tutorials/android/android-styles-and-themes-tutorial}
 \end{document}

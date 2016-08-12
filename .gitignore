@@ -13,3 +13,4 @@
 *.aux
 *.log
 /doc/doc.synctex.gz
+libs

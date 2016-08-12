@@ -10,15 +10,18 @@ import javax.imageio.ImageIO;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
+import com.sulai.gui.PropertyObserver;
 import com.sulai.gui.UI;
 import com.sulai.gui.UIProperty;
 import com.sulai.imageproc.AbstractTracker;
 import com.sulai.imageproc.CVUtils;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
@@ -31,8 +34,9 @@ import javafx.stage.Stage;
 
 public class FXUI extends Application implements UI {
 	private static final String[] SAMPLES = { "res\\sphero_still_cam.mp4", "res\\sphero_moving_cam.mp4",
-			"res\\query.png", "res/samples/sphero1.png", "res/samples/sphero2.png", "res/samples/sphero3.png",
-			"res/samples/sphero4.png" };
+		"res\\query.png", "res/samples/sphero1.png", "res/samples/sphero2.png", "res/samples/sphero3.png",
+		"res/samples/sphero4.png" };
+	private static final String[] BG_SAMPLES = { "res\\samples\\bg1.png","res\\samples\\bg2.png","res\\samples\\bg3.png" };
 
 	private ArrayList<VBox> tabs = new ArrayList<>();
 
@@ -55,12 +59,18 @@ public class FXUI extends Application implements UI {
 			root.setBottom(pane);
 
 			// UI setup
-			Mat[] samples = new Mat[5];
-			for (int i = 0; i < samples.length - 2; i++) {
-				samples[i] = CVUtils.bufferedImageToMat(ImageIO.read(new File(SAMPLES[i + 2])));
+			Mat[] objSamples = new Mat[5];
+			for (int i = 0; i < objSamples.length - 2; i++) {
+				objSamples[i] = CVUtils.bufferedImageToMat(ImageIO.read(new File(SAMPLES[i + 2])));
 			}
-			trackers = UI.initUI(samples, this);
-			TrackingBenchmark benchmark = new TrackingBenchmark(SAMPLES[0], trackers.get(0));
+			Mat[] bgSamples = new Mat[BG_SAMPLES.length];
+			for (int i = 0; i < bgSamples.length; i++) {
+				bgSamples[i] = CVUtils.bufferedImageToMat(ImageIO.read(new File(BG_SAMPLES[i])));
+			}
+			
+			trackers = UI.initUI(objSamples,bgSamples, this);
+			
+			TrackingBenchmark benchmark = new TrackingBenchmark(SAMPLES[1], trackers.get(0));
 			pane.getSelectionModel().selectedItemProperty().addListener(c -> {
 				benchmark.setTracker(trackers.get(pane.getSelectionModel().getSelectedIndex()));
 			});
@@ -139,6 +149,8 @@ public class FXUI extends Application implements UI {
 		slider.valueProperty().addListener(c -> {
 			property.set((int) slider.getValue());
 		});
+		slider.setShowTickLabels(true);
+		slider.setShowTickMarks(true);
 		this.tabs.get(index).getChildren().add(label);
 		this.tabs.get(index).getChildren().add(slider);
 
@@ -151,6 +163,9 @@ public class FXUI extends Application implements UI {
 		slider.valueProperty().addListener(c -> {
 			property.set(slider.getValue());
 		});
+
+		slider.setShowTickLabels(true);
+		slider.setShowTickMarks(true);
 		tabs.get(index).getChildren().add(label);
 		tabs.get(index).getChildren().add(slider);
 	}
@@ -166,6 +181,29 @@ public class FXUI extends Application implements UI {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	@Override
+	public void createCombobox(int tab, String[] labels, UIProperty<Integer> value) {
+		ComboBox<String> box = new ComboBox<>(FXCollections.observableArrayList(labels));
+		box.setOnAction(c->{
+			value.set(box.getSelectionModel().getSelectedIndex());
+		});
+		tabs.get(tab).getChildren().add(box);
+	}
+
+	@Override
+	public void createLabel(int tab,String string, UIProperty<Long> performance) {
+		Label label = new Label("performance");
+		PropertyObserver<Long> o = new PropertyObserver<Long>() {
+			
+			@Override
+			public void propertyChange(Long property) {
+				label.setText(string+":"+property);
+			}
+		};
+		performance.onChange(o);
+		tabs.get(tab).getChildren().add(label);
 	}
 
 }
