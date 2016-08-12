@@ -7,3 +7,4 @@ The CVTracking Lib project is the common interface, used by the ARTracking and t
 [CVTrackingLib](CVTrackingLib/README.md) contains various tracking classes.
 Each has a UIProperty to be able to change the parameters. The common super class Abstract tracker also holds performance and debug information.
 ARTracking shows a benchmark with the different Algorithms used.
+There is also a documentation on the setu, which you can find [here](doc/doc.pdf)
