@@ -1,32 +1,30 @@
 package com.sulai.gui;
 
+import java.util.LinkedList;
+
 public class UIProperty<T> {
 
 	private T property;
 
-	private PropertyObserver o;
+	private LinkedList<PropertyObserver<T>> o = new LinkedList<>();
 
 	public UIProperty(T val) {
 		set(val);
 	}
 
-	public abstract class PropertyObserver {
-		public abstract void propertyChange(T property);
-	}
-
-	public void onChange(PropertyObserver o) {
-		this.o = o;
+	public void onChange(PropertyObserver<T> o) {
+		this.o.add(o);
 	}
 
 	public T get() {
-		if (o != null)
-			o.propertyChange(property);
+		for (PropertyObserver<T> p: o)
+			p.propertyChange(property);
 		return property;
 	}
 
 	public void set(T property) {
-		if (o != null)
-			o.propertyChange(property);
+		for (PropertyObserver<T> p: o)
+			p.propertyChange(property);
 		this.property = property;
 	}
 

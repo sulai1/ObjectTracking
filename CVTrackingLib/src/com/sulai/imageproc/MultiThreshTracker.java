@@ -1,5 +1,6 @@
 package com.sulai.imageproc;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,18 @@ public class MultiThreshTracker extends AbstractTracker {
 
 	public UIProperty<Double> getBlur() {
 		return blur;
+	}
+
+	@Override
+	public void addObjectRefference(Mat obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addBackgroundRefference(Mat bg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

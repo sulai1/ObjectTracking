@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -22,16 +24,15 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 public class CVUtils {
 
 	public static final Scalar RED = new Scalar(0, 0, 255);
+	public static final Scalar BLUE = new Scalar(255, 0, 0);
+	public static final Scalar GREEN = new Scalar(0, 255, 0);
 	public static final Scalar BLACK = new Scalar(0, 0, 0);
 
-	public static ObservableList<String> observableThreshList() {
-		ObservableList<String> items = FXCollections.observableArrayList();
+	public static List<String> observableThreshList() {
+		List<String> items = new ArrayList<>();
 		items.add("Binary");
 		items.add("Binary Inverse");
 		items.add("Otsu");
@@ -179,7 +180,7 @@ public class CVUtils {
 		Point center = new Point();
 		float[] radius = new float[1];
 		MatOfPoint2f maxC2F = new MatOfPoint2f();
-		contour.convertTo(maxC2F, CvType.CV_32FC2);
+		contour.convertTo(maxC2F, CvType.CV_32F);
 		Imgproc.minEnclosingCircle(maxC2F, center, radius);
 
 		// draw contour overlay and the circle

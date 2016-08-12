@@ -1,5 +1,6 @@
 package com.sulai.imageproc;
 
+
 import java.util.ArrayList;
 
 import org.opencv.core.Core;
@@ -44,7 +45,8 @@ public class CVDiffTracker extends AbstractTracker {
 		// calculate the contours
 		ArrayList<MatOfPoint> contours = new ArrayList<>();
 		Imgproc.findContours(res, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-		Imgproc.drawContours(f1, contours, -1, COLOR);
+		if(showDebug.get())
+			Imgproc.drawContours(f1, contours, -1, COLOR);
 		int l = Math.min(contours.size(), 200);
 		for (int i = 0; i < l; i++) {
 			MatOfPoint c = contours.get(i);
@@ -55,8 +57,6 @@ public class CVDiffTracker extends AbstractTracker {
 			Imgproc.minEnclosingCircle(contours2f, center, radius);
 			Imgproc.circle(f1, center, (int) radius[0], COLOR);
 		}
-		refframe = new Mat();
-		Imgproc.cvtColor(frame, refframe, Imgproc.COLOR_RGB2GRAY);
 		return f1;
 	}
 
@@ -66,6 +66,18 @@ public class CVDiffTracker extends AbstractTracker {
 
 	public UIProperty<Double> getBlur() {
 		return blur;
+	}
+
+	@Override
+	public void addObjectRefference(Mat obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addBackgroundRefference(Mat bg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
