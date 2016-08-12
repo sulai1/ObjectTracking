@@ -4,7 +4,6 @@ This project contains various samples for opbject tracking and consists of two p
 The CVTracking Lib project is the common interface, used by the ARTracking and the AARTracking projects.
 
 ##Content
-ARTrackingLib contains various tracking classes.
+[CVTrackingLib](CVTrackingLib/README.md) contains various tracking classes.
 Each has a UIProperty to be able to change the parameters. The common super class Abstract tracker also holds performance and debug information.
-[See details] (CVTrackingLib/README.md)
 ARTracking shows a benchmark with the different Algorithms used.
